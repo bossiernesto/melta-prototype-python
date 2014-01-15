@@ -26,22 +26,6 @@ class AggregationObject(MeltaBaseObject):
 
 
 class AtomicObject(MeltaBaseObject):
-    def __init__(self, melta_instance_name=None, *args, **kwargs):
-        super(AtomicObject, self).__init__(melta_instance_name, *args, **kwargs)
-        self.check_one_argument_restriction(*args)
-        self.assign_arguments(*args)
-
-    def check_one_argument_restriction(self, *arguments):
-        if len(arguments) > 1:
-            raise AtomicObjectInvalidArgumentsException('You can only input a single value to an Atomic Object, trying to assign {0} values'.format(
-                len(arguments)))
-
-    def assign_arguments(self, *arguments):
-        if not arguments:
-            self.value = None
-            return
-        self.value = arguments[0]
-
-
-class AtomicObjectInvalidArgumentsException(Exception):
-    pass
+    def __init__(self, melta_instance_name=None, value=None):
+        super(AtomicObject, self).__init__(melta_instance_name)
+        self.value = value
