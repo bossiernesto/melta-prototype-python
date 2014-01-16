@@ -609,6 +609,7 @@ strong {
   margin: 0 auto;
   position: relative;
   padding: 0 20px;
+  background: url("../images/bg-main.png") #a61717;
 }
 
 section img {
