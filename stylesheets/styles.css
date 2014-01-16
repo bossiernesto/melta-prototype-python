@@ -581,7 +581,7 @@ h3 {
 }
 
 a {
-  color: #ffcc00;
+  color: #020A05;
   font-weight: 400;
   text-decoration: none;
 }
@@ -817,9 +817,6 @@ section #title .credits {
 section #title .credits.left {
   float: left;
 }
-section #title .credits.right {
-  float: right;
-}
 
 @media print, screen and (max-width: 720px) {
   #title .credits {
@@ -849,4 +846,16 @@ section #title .credits.right {
   nav {
     display: none;
   }
+}
+
+section .credits {
+  font-size: 11px;
+  font-family: 'OpenSansRegular', "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-weight: normal;
+  color: #696969;
+  margin-top: -10px;
+}
+
+section .credits.left {
+  float: left;
 }
