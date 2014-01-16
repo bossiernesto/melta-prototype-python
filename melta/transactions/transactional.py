@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 from melta.utils.utils import createvar_if_not_exists
 from difflib import ndiff, restore
 import inspect
@@ -55,7 +54,4 @@ class Transaction(object):
 
     def commit(self):
         self._transactions = []
-=======
-class TransactionalObject(object):
-    pass
->>>>>>> 0a651f92e5de379d824e77da95ef5db0108ea238
+
