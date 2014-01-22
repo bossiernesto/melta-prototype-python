@@ -859,3 +859,12 @@ section .credits {
 section .credits.left {
   float: left;
 }
+
+nav {
+width: 230px;
+position: fixed;
+top: 220px;
+left: 50%;
+margin-left: -580px;
+text-align: right;
+}
