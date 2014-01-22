@@ -1,4 +1,4 @@
-from .random import generate_object_id
+from .melta.utils.random import generate_object_id
 
 
 class Schema(object):

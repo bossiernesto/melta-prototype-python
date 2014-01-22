@@ -1,4 +1,5 @@
-from .random import generate_object_id, generate_object_name
+from .utils.random import generate_object_id, generate_object_name
+from .exceptions.exceptions import NotFoundMeltaObject
 
 
 class MeltaBaseObject(object):
@@ -40,4 +41,3 @@ class AtomicObject(MeltaBaseObject):
         self.value = value
 
 
-class NotFoundMeltaObject(Exception): pass;
