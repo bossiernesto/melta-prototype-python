@@ -860,7 +860,7 @@ section .credits.left {
   float: left;
 }
 
-nav {
+.wrapper nav {
 width: 230px;
 position: fixed;
 top: 220px;
