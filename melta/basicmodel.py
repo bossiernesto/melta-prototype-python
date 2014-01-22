@@ -4,7 +4,7 @@ from .exceptions.exceptions import NotFoundMeltaObject
 
 class MeltaBaseObject(object):
     def __init__(self, melta_instance_name=None, *args, **kwargs):
-        self.id = generate_object_id()
+        self._id = generate_object_id()
         self.instance_name = melta_instance_name or self.generate_name()
 
     def generate_name(self):
