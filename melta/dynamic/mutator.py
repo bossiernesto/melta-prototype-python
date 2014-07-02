@@ -1,8 +1,8 @@
 import types
 from inspect import isclass
 
-class Mutator:
 
+class Mutator:
     @staticmethod
     def unbind(f):
         self = getattr(f, '__self__', None)
@@ -18,18 +18,18 @@ class Mutator:
 
     @staticmethod
     def rebind(f, obj):
-        Mutator.bind(Mutator.unbind(f),obj)
+        Mutator.bind(Mutator.unbind(f), obj)
 
     @staticmethod
     def createFunction(klass, code):
         dict = {}
         methodName = Mutator.getSignatureString(code)
-        exec(code.strip(),globals(), dict)
+        exec(code.strip(), globals(), dict)
         Mutator.insertFunction(klass, dict, methodName)
 
     @staticmethod
     def insertFunction(klass, dictMethod, methodName):
-        setattr(klass,methodName,dictMethod[methodName])
+        setattr(klass, methodName, dictMethod[methodName])
         return klass.__dict__[methodName]
 
     @staticmethod
@@ -38,9 +38,8 @@ class Mutator:
 
 
 class ObjectMutator(Mutator):
-
     @staticmethod
     def createFunction(instance, code):
         if isclass(instance):
             raise TypeError("Should pass an instance and not the class")
-        Mutator.createFunction(instance,code)
+        Mutator.createFunction(instance, code)

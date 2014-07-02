@@ -1,11 +1,11 @@
 from setuptools import setup, find_packages
 
 setup(name="Melta",
-    version="0.1",
+    version="0.0.1",
     description="Simple Object Memory Database",
     author="Ernesto Bossi",
     author_email="bossi.ernestog@gmail.com",
-    url="",
+    url="http://bossiernesto.github.io/melta/",
     license="GPL v3",
     py_modules=find_packages(exclude=('test')),
     keywords="Memory Database",

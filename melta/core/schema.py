@@ -1,4 +1,4 @@
-from .random import generate_object_id
+from .utils.random import generate_object_id
 
 
 class Schema(object):
