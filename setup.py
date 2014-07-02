@@ -12,5 +12,6 @@ setup(name="Melta",
     classifiers=["Development Status :: 2 - Pre-Alpha",
                  "Environment :: Console",
                  "Topic :: Database",
-                 "License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)"]
+                 "License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)"],
+    requires=["OpenSSL"]
 )

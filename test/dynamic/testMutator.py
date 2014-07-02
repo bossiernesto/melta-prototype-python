@@ -34,6 +34,3 @@ class MyTestCase(unittest.TestCase):
              '''
             mutator.ObjectMutator.createFunction(self.instanceAObj,code)
             self.assertEqual('4422',self.instanceA.myFunction('44'))
-
-if __name__ == '__main__':
-    unittest.main()

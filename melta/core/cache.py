@@ -1,7 +1,7 @@
 __author__ = 'ernesto'
 
 from weakref import WeakValueDictionary
-from melta.basicmodel import MeltaBaseObject
+from melta.core.basicmodel import MeltaBaseObject
 
 class MeltaCache(WeakValueDictionary):
 

@@ -26,7 +26,9 @@ class Transaction(object):
             self.call_cascade(value)
             if attribute in RESERVED:
                 continue
+            #TODO: delegar en otro metodo
             if isinstance(value, str):
+                #delegar en otro metodo tambien
                 diff = ndiff(value.splitlines(),getattr(self,attribute).splitlines())
                 diff = list(diff)
                 setattr(self, attribute, "\n".join(restore(diff,1)))

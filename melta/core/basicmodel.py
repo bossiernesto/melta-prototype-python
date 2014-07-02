@@ -1,5 +1,5 @@
 from .random import generate_object_id, generate_object_name
-
+from meltaexceptions import MeltaException, NotFoundMeltaObject
 
 class MeltaBaseObject(object):
     def __init__(self, melta_instance_name=None, *args, **kwargs):
@@ -9,6 +9,9 @@ class MeltaBaseObject(object):
     def generate_name(self):
         return generate_object_name(self.__class__.__name__)
 
+    def validate_base_object(self,base_object):
+        if not isinstance(base_object,self.__class__):
+            raise MeltaException
 
 class AggregationObject(MeltaBaseObject):
     def __init__(self, melta_instance_name=None, *args, **kwargs):
@@ -40,4 +43,11 @@ class AtomicObject(MeltaBaseObject):
         self.value = value
 
 
-class NotFoundMeltaObject(Exception): pass;
+class ReferenceObject(MeltaBaseObject):
+    def __init__(self,base_object,melta_instance_name=None):
+        self.reference_id = base_object.id
+        super(ReferenceObject,self).__init__(melta_instance_name)
+        self.wrapped_object = base_object
+
+    def get_wrapped(self):
+        return self.wrapped_object

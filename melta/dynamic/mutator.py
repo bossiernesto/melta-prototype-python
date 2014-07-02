@@ -14,7 +14,7 @@ class Mutator:
 
     @staticmethod
     def bind(f, obj):
-        obj.__dict__[f.__name__] = types.MethodType(f,obj,obj.__class__)
+        obj.__dict__[f.__name__] = types.MethodType(f,obj)
 
     @staticmethod
     def rebind(f, obj):

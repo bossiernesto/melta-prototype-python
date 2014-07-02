@@ -1,5 +1,5 @@
 from unittest import TestCase
-from melta.basicmodel import AggregationObject, AtomicObject
+from melta.core.basicmodel import AggregationObject, AtomicObject
 
 
 class AtomicModelTest(TestCase):
