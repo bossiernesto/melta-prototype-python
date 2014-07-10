@@ -12,6 +12,7 @@ class Schema(object):
         self.schema_name = name or self.schema_id
 
         #cache and metadata facilities
+        self.synchronization_strategy = None #TODO: add some synchronization strategies
         self.cache = MeltaCache()
         self.metadata = MetadataSchema(self)
 
@@ -51,11 +52,12 @@ class Schema(object):
 
         try:
             original_object = object
-            melta_object = object if isinstance(object, MeltaBaseObject) else self.to_melta_object(object,
-                                                                                                   alternate_name,
-                                                                                                   transactions)
+            if isinstance(object, MeltaBaseObject):
+                melta_object = object
+            else:
+                melta_object = self.to_melta_object(object, alternate_name, transactions)
+                self.cache.add_object(melta_object, original_object)
             self.add_melta_object(melta_object)
-            self.cache.add_object(melta_object, original_object)
         except MeltaException:
             #TODO: log event
             pass

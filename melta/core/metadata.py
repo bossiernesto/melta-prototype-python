@@ -20,11 +20,19 @@ class MetadataSchema(Metadata):
         """
         pass
 
+
+CLEAN_MELTAOBJECT_STATUS =  'clean'
+DIRTY_MELTAOBJECT_STATUS =  'dirty'
+
+
+OBJECT_STATUS = []
+
 class MetadataObject(Metadata):
     def __init__(self, object):
         PropertyMaker().buildProperty(self, 'object', object)
         PropertyMaker().buildProperty(self, 'schema')
         PropertyMaker().buildProperty(self, 'type')
+        PropertyMaker().buildProperty(self,'object_status')
 
     def get_schema(self):
         return self.schema

@@ -29,9 +29,9 @@ class PointerModelTest(TestCase):
         self.aggregated = AggregationObject(**{'name': 'John', 'age': 54})
 
     def test_pointer_atomic_object(self):
-        reference = ReferenceObject(self.atomic,'to_student24')
-        self.assertEqual(reference.get_referenced_object(),self.atomic)
+        reference = ReferenceObject(self.atomic, 'to_student24')
+        self.assertEqual(reference.get_referenced_object(), self.atomic)
 
     def test_pointer_aggregated_object(self):
         reference = ReferenceObject(self.aggregated, 'to_teacher')
-        self.assertEqual(reference.get_referenced_object(),self.aggregated)
+        self.assertEqual(reference.get_referenced_object(), self.aggregated)

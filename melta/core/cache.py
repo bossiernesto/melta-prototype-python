@@ -4,7 +4,9 @@ from melta.core.basicmodel import MeltaBaseObject
 #TODO: change this to a real cache
 class MeltaCache(WeakValueDictionary):
     """
-    Melta cache keeps a
+    Melta cache is a bookkeeping mechanism of MeltaCacheObjects associated with the melta_object id, the CacheObjects
+    have the original python object in the enviroment and in case of querying it'll consult this very cache.
+    Probably the best idea is to implement a LRU cache for now.
     """
 
     def add_object(self, melta_object, original_object=None):

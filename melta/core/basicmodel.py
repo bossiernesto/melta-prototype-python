@@ -8,7 +8,7 @@ class MeltaBaseObject(object):
         self.instance_name = melta_instance_name or self.generate_name()
 
     def get_id(self):
-        self._id
+        return self._id
 
     def generate_name(self):
         return generate_object_name(self.__class__.__name__)
