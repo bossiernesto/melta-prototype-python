@@ -9,30 +9,42 @@ class Metadata(object):
 class MetadataSchema(Metadata):
     def __init__(self, schema, created_at=datetime.datetime.now()):
         PropertyMaker().buildProperty(self, 'schema', schema)
-        #objects_name_space is a dictionary with Melta object name key and a set of objects with this
+        #objects_name_space is a dictionary with Melta object name key and a set of melta objects with that name identifier.
         self.objects_name_space = {}
         PropertyMaker().buildProperty(self, 'created_at', created_at)
         PropertyMaker().buildProperty(self, 'object_count', 0)
 
-    def update_object_space(self,object):
+    def update_object_space(self, object):
         """
         Update the objects_name_space with a new object
         """
-        pass
+        try:
+            object_set = self.objects_name_space[object.instance_name]
+            object_set.add(object)
+        except KeyError:
+            new_set = set()
+            new_set.add(object)
+            self.objects_name_space[object.instance_name] = new_set
 
 
-CLEAN_MELTAOBJECT_STATUS =  'clean'
-DIRTY_MELTAOBJECT_STATUS =  'dirty'
+CLEAN_MELTAOBJECT_STATUS = 'clean'
+DIRTY_MELTAOBJECT_STATUS = 'dirty'
+INVALID_MELTAOBJECT_STATUS = 'invalid'
 
+OBJECT_STATUS = [CLEAN_MELTAOBJECT_STATUS, DIRTY_MELTAOBJECT_STATUS, INVALID_MELTAOBJECT_STATUS]
 
-OBJECT_STATUS = []
 
 class MetadataObject(Metadata):
     def __init__(self, object):
+        PropertyMaker().buildProperty(self, 'created_at', datetime.datetime.now())
+        PropertyMaker().buildProperty(self, 'modified_at', datetime.datetime.now())
         PropertyMaker().buildProperty(self, 'object', object)
         PropertyMaker().buildProperty(self, 'schema')
-        PropertyMaker().buildProperty(self, 'type')
-        PropertyMaker().buildProperty(self,'object_status')
+        PropertyMaker().buildProperty(self, 'type', type(object))
+        PropertyMaker().buildProperty(self, 'object_status', CLEAN_MELTAOBJECT_STATUS)
+
+    def notify_object_update(self):
+        self.modified_at = datetime.datetime.now()
 
     def get_schema(self):
         return self.schema

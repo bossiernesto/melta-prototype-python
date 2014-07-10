@@ -18,12 +18,8 @@ def is_python_instance(obj):
     else:
         return True
 
-if __name__ == '__main__':
-    class A:
-        pass
-    dict = {44:'4444'}
-
-    a = A()
-    print(is_python_instance(a))
-    print(is_python_instance(A))
-    print(is_python_instance(dict))
+def listify(gen):
+    "Convert a generator into a function which returns a list"
+    def patched(*args, **kwargs):
+        return list(gen(*args, **kwargs))
+    return patched

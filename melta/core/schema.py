@@ -4,9 +4,9 @@ from .object_converter import MeltaObjectConverter
 from .cache import MeltaCache
 from melta.utils.utils import is_python_instance
 from .metadata import MetadataSchema
+from melta.transactions.transactional import Transaction
 
-
-class Schema(object):
+class Schema(object, Transaction):
     def __init__(self, name=None):
         self.schema_id = generate_object_id()
         self.schema_name = name or self.schema_id

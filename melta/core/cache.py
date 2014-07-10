@@ -18,6 +18,4 @@ class MeltaCacheObject(object):
     def __init__(self, melta_object, python_object):
         self.python_object = python_object
         self.melta_object = melta_object
-
-    def update_python_object(self):
-        pass
+        self.access_counter = 0

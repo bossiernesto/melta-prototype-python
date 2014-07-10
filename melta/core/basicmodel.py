@@ -1,11 +1,12 @@
 from .random import generate_object_id, generate_object_name
 from melta.exceptions.exceptions import MeltaException, NotFoundMeltaObject
-
+from .metadata import MetadataObject
 
 class MeltaBaseObject(object):
     def __init__(self, melta_instance_name=None, *args, **kwargs):
         self._id = generate_object_id()
         self.instance_name = melta_instance_name or self.generate_name()
+        self.metadata = MetadataObject(self)
 
     def get_id(self):
         return self._id
@@ -17,6 +18,11 @@ class MeltaBaseObject(object):
         if not isinstance(base_object, self.__class__):
             raise MeltaException
 
+    def added_to_schema(self, schema):
+        self.metadata.schema = schema
+
+    def get_metadata(self):
+        return self.metadata
 
 class AggregationObject(MeltaBaseObject):
     def __init__(self, melta_instance_name=None, *args, **kwargs):
@@ -24,6 +30,9 @@ class AggregationObject(MeltaBaseObject):
         self._atomic_attributes = []
         if kwargs:
             self.set_attrbutes(**kwargs)
+
+    def get_attributes(self):
+        return self._atomic_attributes
 
     def set_attrbutes(self, **kwargs):
         for name in kwargs:
