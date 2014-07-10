@@ -40,7 +40,7 @@ class PropertyMaker:
             for propertName, value in propdict.items():
                 self.buildProperty(target, propertName, value)
 
-    def buildProperty(self, target, propertyName, value):
+    def buildProperty(self, target, propertyName, value=None):
 
         self.migrateMethods(target)
         target._makeProperty(propertyName, value)

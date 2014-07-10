@@ -6,35 +6,43 @@ from melta.dynamic.propertyMaker import PropertyMaker, Mutator
 class A:
     pass
 
+class B:
+    pass
+
+class C:
+    def __init__(self,atribute):
+        PropertyMaker().buildProperty(self,'attribute',atribute)
 
 class testDynamicProperty(TestCase):
     def setUp(self):
         self.a = A()
 
-    def testBuildProperty(self):
+    def test_build_property(self):
         PropertyMaker().buildProperty(self.a, 'saraza', 2)
         self.assertEqual(self.a.saraza, 2)
 
-    def testBuildPropertiesString(self):
+    def test_build_properties_string(self):
         PropertyMaker().buildProperty(self.a, 'dato', "ddd")
         self.assertEqual(self.a.dato, "ddd")
 
-    def testBuildProperties(self):
+    def test_build_properties(self):
         PropertyMaker().buildProperties(self.a, {'dato': "ddd", "saraza": 2})
         self.assertEqual(self.a.dato, "ddd")
         self.assertEqual(self.a.saraza, 2)
 
-    def testAssignInstance(self):
-        class B:
-            pass
-
+    def test_assign_instance(self):
         b = B()
         PropertyMaker().buildProperty(self.a, 'instanceB', b)
         self.assertEqual(b, self.a.instanceB)
 
-    def testCode(self):
+    def test_glued_code(self):
         prop = PropertyMaker()
         PropertyMaker().migrateMethods(self.a)
         Mutator().rebind(prop.getPrivateMehtods, self.a)
         for methodProp, methodA in (zip(prop.getPrivateMehtods(), self.a.getPrivateMehtods())):
             self.assertEqual(inspect.getsource(methodProp), inspect.getsource(methodA))
+
+    def test_self_attribute_setter(self):
+        value = 34
+        c_instance= C(value)
+        self.assertEqual(value,c_instance.attribute)

@@ -1,11 +1,14 @@
 from .random import generate_object_id, generate_object_name
-from meltaexceptions import MeltaException, NotFoundMeltaObject
+from melta.exceptions.exceptions import MeltaException, NotFoundMeltaObject
 
 
 class MeltaBaseObject(object):
     def __init__(self, melta_instance_name=None, *args, **kwargs):
         self._id = generate_object_id()
         self.instance_name = melta_instance_name or self.generate_name()
+
+    def get_id(self):
+        self._id
 
     def generate_name(self):
         return generate_object_name(self.__class__.__name__)
@@ -47,9 +50,9 @@ class AtomicObject(MeltaBaseObject):
 
 class ReferenceObject(MeltaBaseObject):
     def __init__(self, base_object, melta_instance_name=None):
-        self.reference_id = base_object.id
         super(ReferenceObject, self).__init__(melta_instance_name)
+        self.reference_id = base_object.get_id()
         self.wrapped_object = base_object
 
-    def get_wrapped(self):
+    def get_referenced_object(self):
         return self.wrapped_object
