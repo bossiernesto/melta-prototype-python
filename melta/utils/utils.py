@@ -1,3 +1,6 @@
+import six
+
+
 def createvar_if_not_exists(obj, var, initial):
     try:
         getattr(obj, var)
@@ -18,8 +21,18 @@ def is_python_instance(obj):
     else:
         return True
 
+
 def listify(gen):
     "Convert a generator into a function which returns a list"
+
     def patched(*args, **kwargs):
         return list(gen(*args, **kwargs))
+
     return patched
+
+
+def getAttributes(obj):
+    return [prop for (prop, value) in six.iteritems(vars(obj))]
+
+
+get_python_type_name = lambda python_object: type(python_object).__name__

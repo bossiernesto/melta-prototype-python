@@ -1,5 +1,6 @@
 from melta.dynamic.propertyMaker import PropertyMaker
 import datetime
+from melta.core.types import INSTANCE_TYPE
 
 
 class Metadata(object):
@@ -40,8 +41,10 @@ class MetadataObject(Metadata):
         PropertyMaker().buildProperty(self, 'modified_at', datetime.datetime.now())
         PropertyMaker().buildProperty(self, 'object', object)
         PropertyMaker().buildProperty(self, 'schema')
-        PropertyMaker().buildProperty(self, 'type', type(object))
+        PropertyMaker().buildProperty(self, 'type', object.get_data_type())
         PropertyMaker().buildProperty(self, 'object_status', CLEAN_MELTAOBJECT_STATUS)
+        original_class = object.instance_name if object.get_data_type() == INSTANCE_TYPE else None
+        PropertyMaker().buildProperty(self, 'original_class', original_class)
 
     def notify_object_update(self):
         self.modified_at = datetime.datetime.now()

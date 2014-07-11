@@ -13,5 +13,5 @@ setup(name="Melta",
                  "Environment :: Console",
                  "Topic :: Database",
                  "License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)"],
-    requires=["OpenSSL"]
+    requires=["OpenSSL","six"]
 )

@@ -1,6 +1,8 @@
 from .random import generate_object_id, generate_object_name
 from melta.exceptions.exceptions import MeltaException, NotFoundMeltaObject
 from .metadata import MetadataObject
+from .types import INSTANCE_TYPE
+
 
 class MeltaBaseObject(object):
     def __init__(self, melta_instance_name=None, *args, **kwargs):
@@ -24,10 +26,14 @@ class MeltaBaseObject(object):
     def get_metadata(self):
         return self.metadata
 
+
 class AggregationObject(MeltaBaseObject):
-    def __init__(self, melta_instance_name=None, *args, **kwargs):
-        super(AggregationObject, self).__init__(melta_instance_name=melta_instance_name, *args, **kwargs)
+    def __init__(self, melta_instance_name=None, primitive_type=INSTANCE_TYPE, *args, **kwargs):
         self._atomic_attributes = []
+        self._primitive_type = primitive_type
+        super(AggregationObject, self).__init__(melta_instance_name, *args, **kwargs)
+        if args:
+            self.set_attributes_list(*args)
         if kwargs:
             self.set_attrbutes(**kwargs)
 
@@ -38,11 +44,20 @@ class AggregationObject(MeltaBaseObject):
         for name in kwargs:
             self._atomic_attributes.append(AtomicObject(name, kwargs[name]))
 
+    def set_attributes_list(self, *args):
+        for melta_object in args:
+            if not isinstance(melta_object, MeltaBaseObject):
+                raise MeltaException('{0} is not a Melta Object'.format(melta_object))
+            self._atomic_attributes.append(melta_object)
+
     def _find_atomic_attribute_(self, name):
         value = [atomic.value for atomic in self._atomic_attributes if atomic.instance_name == name][0]
         if not value:
             raise NotFoundMeltaObject
         return value
+
+    def get_data_type(self):
+        return self._primitive_type
 
     def __getattribute__(self, name):
         try:
@@ -53,15 +68,21 @@ class AggregationObject(MeltaBaseObject):
 
 class AtomicObject(MeltaBaseObject):
     def __init__(self, melta_instance_name=None, value=None):
-        super(AtomicObject, self).__init__(melta_instance_name)
         self.value = value
+        super(AtomicObject, self).__init__(melta_instance_name)
+
+    def get_data_type(self):
+        return type(self.value).__name__
 
 
 class ReferenceObject(MeltaBaseObject):
     def __init__(self, base_object, melta_instance_name=None):
-        super(ReferenceObject, self).__init__(melta_instance_name)
         self.reference_id = base_object.get_id()
         self.wrapped_object = base_object
+        super(ReferenceObject, self).__init__(melta_instance_name)
 
     def get_referenced_object(self):
         return self.wrapped_object
+
+    def get_data_type(self):
+        return self.get_referenced_object().get_data_type()
