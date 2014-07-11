@@ -6,8 +6,9 @@ from melta.utils.utils import is_python_instance
 from .metadata import MetadataSchema
 from melta.transactions.transactional import Transaction
 
-class Schema(object, Transaction):
-    def __init__(self, name=None):
+
+class Schema(Transaction, object):
+    def __init__(self, name=None, transaction=False):
         self.schema_id = generate_object_id()
         self.schema_name = name or self.schema_id
 
@@ -39,23 +40,24 @@ class Schema(object, Transaction):
                 "Cannot add a non melta object to the model, use add_object for adding a python object")
         self.root_objects.add(melta_object)
         self.objects[melta_object.get_id()] = melta_object
+        self.metadata.update_object_space(melta_object)
 
-    def to_melta_object(self, object, alternate_name=None, transactions=False):
-        return MeltaObjectConverter().to_melta_object(object, alternate_name=None, transactions=False)
+    def to_melta_object(self, python_object, alternate_name=None):
+        return MeltaObjectConverter().to_melta_object(python_object, alternate_name=None)
 
-    def add_object(self, object, transactions=False, alternate_name=None):
-        cache = is_python_instance(object)
-        self.add_object_to_schema(object, cache, transactions)
+    def add_object(self, python_object, alternate_name=None):
+        cache = is_python_instance(python_object)
+        self.add_object_to_schema(python_object, cache)
 
-    def add_object_to_schema(self, object, cache=True, transactions=False, alternate_name=None):
+    def add_object_to_schema(self, python_object, cache=True, alternate_name=None):
         from melta.core.basicmodel import MeltaBaseObject
 
         try:
-            original_object = object
-            if isinstance(object, MeltaBaseObject):
-                melta_object = object
+            original_object = python_object
+            if isinstance(python_object, MeltaBaseObject):
+                melta_object = python_object
             else:
-                melta_object = self.to_melta_object(object, alternate_name, transactions)
+                melta_object = self.to_melta_object(python_object, alternate_name)
                 self.cache.add_object(melta_object, original_object)
             self.add_melta_object(melta_object)
         except MeltaException:

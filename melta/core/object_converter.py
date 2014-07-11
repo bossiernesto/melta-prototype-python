@@ -13,7 +13,7 @@ class GenericConverter(object):
     __metaclass__ = ABCMeta
 
     @abstractmethod
-    def to_melta_object(self, python_object, alternate_name=None, transactions=False):
+    def to_melta_object(self, python_object, alternate_name=None):
         raise NotImplementedError('Should be implemented in sublcass')
 
     @abstractmethod
@@ -37,7 +37,7 @@ class GenericConverter(object):
 
 
 class PrimitiveConverter(GenericConverter):
-    def to_melta_object(self, python_object, alternate_name=None, transactions=False):
+    def to_melta_object(self, python_object, alternate_name=None):
         name = self.name_by_param_or_type(python_object, alternate_name)
         return AtomicObject(name, python_object)
 
@@ -50,7 +50,7 @@ IntegerConverter = PrimitiveConverter
 
 
 class DictionaryConverter(GenericConverter):
-    def to_melta_object(self, python_object, alternate_name=None, transactions=False):
+    def to_melta_object(self, python_object, alternate_name=None):
         name = self.name_by_param_or_type(python_object, alternate_name)
         object_type = get_python_type_name(python_object)
         return AggregationObject(name, object_type, **python_object)
@@ -60,7 +60,7 @@ class DictionaryConverter(GenericConverter):
 
 
 class InstanceConverter(GenericConverter):
-    def to_melta_object(self, python_object, alternate_name=None, transactions=False):
+    def to_melta_object(self, python_object, alternate_name=None):
         klass_name = python_object.__class__
         melta_objects = self.meltize_instance_attributes(python_object)
         return AggregationObject(klass_name, INSTANCE_TYPE, *melta_objects)
@@ -80,7 +80,7 @@ class InstanceConverter(GenericConverter):
 
 
 class ListConverter(GenericConverter):
-    def to_melta_object(self, python_object, alternate_name=None, transactions=False):
+    def to_melta_object(self, python_object, alternate_name=None):
         elements_meltized = self.convert_elements(python_object)
         object_type = get_python_type_name(python_object)
         name = self.name_by_param_or_type(object, alternate_name)
@@ -103,10 +103,10 @@ OBJECT_CONVERSORS = {'dict': DictionaryConverter, INSTANCE_TYPE: InstanceConvert
 
 
 class MeltaObjectConverter(object):
-    def to_melta_object(self, python_object, alternate_name=None, transactions=False):
+    def to_melta_object(self, python_object, alternate_name=None):
         converter = InstanceConverter() if is_python_instance(python_object) else OBJECT_CONVERSORS[
             get_python_type_name(python_object)]()
-        return converter.to_melta_object(python_object, alternate_name, transactions)
+        return converter.to_melta_object(python_object, alternate_name)
 
     def to_object(self, melta_object):
         return OBJECT_CONVERSORS[melta_object.get_data_type()]().to_object(melta_object)
