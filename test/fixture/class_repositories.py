@@ -7,20 +7,20 @@ class Person:
     pass
 
 
-persona1 = Person()
+person1 = Person()
 
-property_maker.buildProperty(persona1, "edad", 20)
-property_maker.buildProperty(persona1, "altura", 180)
-property_maker.buildProperty(persona1, "sexo", "masculino")
+property_maker.buildProperty(person1, "edad", 20)
+property_maker.buildProperty(person1, "altura", 180)
+property_maker.buildProperty(person1, "sexo", "male")
 
 
 class Casa:
     pass
 
 
-casa1 = Casa()
-property_maker.buildProperty(casa1, "antiguedad", 32)
-property_maker.buildProperty(casa1, "tipo_casa", "dos_aguas")
-property_maker.buildProperty(casa1, "mt2", 360)
+house1 = Casa()
+property_maker.buildProperty(house1, "antiguedad", 32)
+property_maker.buildProperty(house1, "tipo_casa", "bungalow")
+property_maker.buildProperty(house1, "mt2", 360)
 
 

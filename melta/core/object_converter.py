@@ -17,7 +17,7 @@ class GenericConverter(object):
         raise NotImplementedError('Should be implemented in sublcass')
 
     @abstractmethod
-    def to_object(self, python_object):
+    def to_object(self, melta_object):
         raise NotImplementedError('Should be implemented in subclass')
 
     def name_by_param_or_type(self, python_object, name=None):
@@ -47,6 +47,15 @@ class PrimitiveConverter(GenericConverter):
 
 StringConverter = PrimitiveConverter
 IntegerConverter = PrimitiveConverter
+FloatConverter = PrimitiveConverter
+
+#TODO: Remove this NullConverter when all types have a protocol of Converte implemented.
+class NullConverter(GenericConverter):
+    def to_melta_object(self, python_object, alternate_name=None):
+        return AtomicObject(generate_object_name(python_object), 43)
+
+    def to_object(self, melta_object):
+        pass
 
 
 class DictionaryConverter(GenericConverter):
@@ -99,7 +108,7 @@ class ListConverter(GenericConverter):
 
 
 OBJECT_CONVERSORS = {'dict': DictionaryConverter, INSTANCE_TYPE: InstanceConverter, 'str': StringConverter,
-                     'int': IntegerConverter, 'list': ListConverter}
+                     'int': IntegerConverter, 'float': FloatConverter, 'list': ListConverter, 'method': NullConverter}
 
 
 class MeltaObjectConverter(object):

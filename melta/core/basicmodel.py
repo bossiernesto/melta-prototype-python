@@ -26,6 +26,9 @@ class MeltaBaseObject(object):
     def get_metadata(self):
         return self.metadata
 
+    def get_schema(self):
+        return self.metadata.get_schema()
+
 
 class AggregationObject(MeltaBaseObject):
     def __init__(self, melta_instance_name=None, primitive_type=INSTANCE_TYPE, *args, **kwargs):

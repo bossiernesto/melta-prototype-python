@@ -41,6 +41,7 @@ class Schema(Transaction, object):
         self.root_objects.add(melta_object)
         self.objects[melta_object.get_id()] = melta_object
         self.metadata.update_object_space(melta_object)
+        melta_object.added_to_schema(self)
 
     def to_melta_object(self, python_object, alternate_name=None):
         return MeltaObjectConverter().to_melta_object(python_object, alternate_name=None)
