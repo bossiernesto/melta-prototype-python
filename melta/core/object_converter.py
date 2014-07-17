@@ -2,7 +2,7 @@ from abc import ABCMeta, abstractmethod
 from .basicmodel import AtomicObject, AggregationObject
 from .random import generate_object_name
 from melta.utils.utils import listify, is_python_instance, getAttributes, get_python_type_name
-from .types import INSTANCE_TYPE
+from .melta_types import INSTANCE_TYPE
 
 #TODO: make tests and complete
 

@@ -1,7 +1,7 @@
 from .random import generate_object_id, generate_object_name
 from melta.exceptions.exceptions import MeltaException, NotFoundMeltaObject
 from .metadata import MetadataObject
-from .types import INSTANCE_TYPE
+from .melta_types import INSTANCE_TYPE
 
 
 class MeltaBaseObject(object):
@@ -28,6 +28,10 @@ class MeltaBaseObject(object):
 
     def get_schema(self):
         return self.metadata.get_schema()
+
+    def destroy(self):
+        del self.metadata
+        del self
 
 
 class AggregationObject(MeltaBaseObject):
@@ -58,6 +62,10 @@ class AggregationObject(MeltaBaseObject):
         if not value:
             raise NotFoundMeltaObject
         return value
+
+    def syncronize(self, python_object):
+        #create a syncronizer and syncronize objects
+        pass
 
     def get_data_type(self):
         return self._primitive_type

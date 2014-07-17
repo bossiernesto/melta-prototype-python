@@ -1,6 +1,6 @@
 from melta.dynamic.propertyMaker import PropertyMaker
 import datetime
-from melta.core.types import INSTANCE_TYPE
+from melta.core.melta_types import INSTANCE_TYPE
 
 
 class Metadata(object):
@@ -15,17 +15,21 @@ class MetadataSchema(Metadata):
         PropertyMaker().buildProperty(self, 'created_at', created_at)
         PropertyMaker().buildProperty(self, 'object_count', 0)
 
-    def update_object_space(self, object):
+    def remove_object_from_space(self, melta_object):
+        object_set = self.objects_name_space[melta_object.instance_name]
+        self.objects_name_space[melta_object.instance_name] = object_set.difference([melta_object])
+
+    def update_object_space(self, melta_object):
         """
         Update the objects_name_space with a new object
         """
         try:
-            object_set = self.objects_name_space[object.instance_name]
-            object_set.add(object)
+            object_set = self.objects_name_space[melta_object.instance_name]
+            object_set.add(melta_object)
         except KeyError:
             new_set = set()
-            new_set.add(object)
-            self.objects_name_space[object.instance_name] = new_set
+            new_set.add(melta_object)
+            self.objects_name_space[melta_object.instance_name] = new_set
 
 
 CLEAN_MELTAOBJECT_STATUS = 'clean'

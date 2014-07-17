@@ -5,6 +5,7 @@ from .cache import MeltaCache
 from melta.utils.utils import is_python_instance
 from .metadata import MetadataSchema
 from melta.transactions.transactional import Transaction
+import gc
 
 
 class Schema(Transaction, object):
@@ -14,7 +15,7 @@ class Schema(Transaction, object):
 
         #cache and metadata facilities
         self.synchronization_strategy = None #TODO: add some synchronization strategies
-        self.cache = MeltaCache()
+        self.cache = MeltaCache(self)
         self.metadata = MetadataSchema(self)
 
         #set of root_objects in the current schema
@@ -43,12 +44,32 @@ class Schema(Transaction, object):
         self.metadata.update_object_space(melta_object)
         melta_object.added_to_schema(self)
 
+    def commit_state(self):
+        self.cache.update_cache()
+
     def to_melta_object(self, python_object, alternate_name=None):
         return MeltaObjectConverter().to_melta_object(python_object, alternate_name=None)
 
     def add_object(self, python_object, alternate_name=None):
         cache = is_python_instance(python_object)
-        self.add_object_to_schema(python_object, cache)
+        self.add_object_to_schema(python_object, cache, alternate_name)
+
+    def _clean_references_on_current_schema(self, melta_object):
+        #TODO: clean references
+        pass
+
+    def remove_object(self, melta_object):
+        from melta.core.basicmodel import MeltaBaseObject
+
+        if not isinstance(melta_object, MeltaBaseObject):
+            raise MeltaException('Object {0} is not of {1}'.format(melta_object, MeltaBaseObject.__name__))
+        current_object = self.objects.pop(melta_object.get_id())
+        self._clean_references_on_current_schema(melta_object)
+        self.root_objects = self.root_objects.difference([melta_object])
+        self.metadata.remove_object_from_space(current_object)
+        current_object.destroy()
+        del current_object
+        gc.collect()
 
     def add_object_to_schema(self, python_object, cache=True, alternate_name=None):
         from melta.core.basicmodel import MeltaBaseObject
