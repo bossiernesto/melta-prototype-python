@@ -1,9 +1,10 @@
 from melta.dynamic.propertyMaker import PropertyMaker
 import datetime
 from melta.core.melta_types import INSTANCE_TYPE
+from melta.transactions.transactional import Transaction
 
 
-class Metadata(object):
+class Metadata(Transaction, object):
     pass
 
 
@@ -62,3 +63,6 @@ class MetadataObject(Metadata):
 
     def remove_reference(self, reference):
         self.object_references = self.object_references.difference([reference])
+
+    def clean_references(self):
+        self.object_references = set()

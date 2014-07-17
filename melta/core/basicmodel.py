@@ -2,9 +2,10 @@ from .random import generate_object_id, generate_object_name
 from melta.exceptions.exceptions import MeltaException, NotFoundMeltaObject
 from .metadata import MetadataObject
 from .melta_types import INSTANCE_TYPE
+from melta.transactions.transactional import Transaction
 
 
-class MeltaBaseObject(object):
+class MeltaBaseObject(Transaction, object):
     def __init__(self, melta_instance_name=None, *args, **kwargs):
         self._id = generate_object_id()
         self.instance_name = melta_instance_name or self.generate_name()
@@ -35,6 +36,30 @@ class MeltaBaseObject(object):
     def destroy(self):
         del self.metadata
         del self
+
+    def clean_references(self):
+        self.metadata.clean_references()
+
+    #Transaction methods overwritten to propagate command to metadata object
+    def start(self):
+        self.metadata.start()
+        super(MeltaBaseObject, self).start()
+
+    def stop(self):
+        self.metadata.stop()
+        super(MeltaBaseObject, self).stop()
+
+    def commit(self):
+        self.metadata.commit()
+        super(MeltaBaseObject, self).commit()
+
+    def checkpoint(self):
+        self.metadata.checkpoint()
+        super(MeltaBaseObject, self).checkpoint()
+
+    def rollback(self):
+        self.metadata.rollback()
+        super(MeltaBaseObject, self).rollback()
 
 
 class AggregationObject(MeltaBaseObject):
@@ -67,7 +92,7 @@ class AggregationObject(MeltaBaseObject):
         return value
 
     def syncronize(self, python_object):
-        #create a syncronizer and syncronize objects
+        #TODO: create a syncronizer and syncronize objects
         pass
 
     def get_data_type(self):
@@ -99,6 +124,7 @@ class ReferenceObject(MeltaBaseObject):
         self.reference_id = base_object.get_id()
         self.wrapped_object = base_object
         super(ReferenceObject, self).__init__(melta_instance_name)
+        base_object.metadata.add_reference(self)
 
     def get_referenced_object(self):
         return self.wrapped_object

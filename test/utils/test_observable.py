@@ -17,7 +17,6 @@ class ObservableData(Subject, object):
 
     @notify
     def update_value(self, value):
-        print("Update with value,{0}".format(value))
         self.data = value
 
 

@@ -59,8 +59,11 @@ class Schema(Transaction, object):
         self.add_object_to_schema(python_object, cache, alternate_name)
 
     def _clean_references_on_current_schema(self, melta_object):
-        #TODO: clean references
-        pass
+        references = melta_object.metadata.object_references
+        melta_object.clean_references()
+        for reference in references:
+            self.remove_object(reference)
+
 
     def remove_object(self, melta_object):
         from melta.core.basicmodel import MeltaBaseObject
