@@ -56,8 +56,13 @@ class MeltaCache(object):
             self.to_melta_object_cache[python_object] = melta_object_weak
 
     def _delete_melta_object(self, melta_object):
-        self.schema.remove_object(melta_object)
-        gc.collect()
+        configuration = self.schema.get_configuration()
+        if configuration.can_remove_on_cascade():
+            self.schema.remove_object(melta_object)
+            gc.collect()
+        else:
+            self.to_object_cache.pop(melta_object)
+
 
     @listify
     def _get_dirty_values(self):
@@ -72,7 +77,7 @@ class MeltaCache(object):
         for value in removed_objects:
             self._delete_melta_object(value())
 
-    def check_dirty_object(self):
+    def _check_dirty_object(self):
         for cached_melta_object, python_object in self.to_object_cache.data.items():
             if self.monitor.is_changed(python_object):
                 melta_object = cached_melta_object()
@@ -80,4 +85,4 @@ class MeltaCache(object):
 
     def update_cache(self):
         self._clean_unused_references()
-        self.check_dirty_object()
+        self._check_dirty_object()

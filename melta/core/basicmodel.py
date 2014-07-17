@@ -23,6 +23,9 @@ class MeltaBaseObject(object):
     def added_to_schema(self, schema):
         self.metadata.schema = schema
 
+    def remove_reference(self, reference):
+        self.metadata.remove_reference(reference)
+
     def get_metadata(self):
         return self.metadata
 
@@ -70,6 +73,11 @@ class AggregationObject(MeltaBaseObject):
     def get_data_type(self):
         return self._primitive_type
 
+    def destroy(self):
+        for atomic in self._atomic_attributes:
+            atomic.destroy()
+        super(AggregationObject, self).destroy()
+
     def __getattribute__(self, name):
         try:
             return super(AggregationObject, self).__getattribute__(name)
@@ -97,3 +105,7 @@ class ReferenceObject(MeltaBaseObject):
 
     def get_data_type(self):
         return self.get_referenced_object().get_data_type()
+
+    def destroy(self):
+        self.wrapped_object.remove_reference(self)
+        super(ReferenceObject, self).destroy()

@@ -6,15 +6,17 @@ from melta.utils.utils import is_python_instance
 from .metadata import MetadataSchema
 from melta.transactions.transactional import Transaction
 import gc
+from melta.core.configuration import MeltaConfiguration
 
 
 class Schema(Transaction, object):
-    def __init__(self, name=None, transaction=False):
+    def __init__(self, name=None, configuration=None):
         self.schema_id = generate_object_id()
         self.schema_name = name or self.schema_id
+        self.configuration = configuration or MeltaConfiguration()
 
         #cache and metadata facilities
-        self.synchronization_strategy = None #TODO: add some synchronization strategies
+        self.syncronizer = None #TODO: add some synchronization strategies based on it's configuration
         self.cache = MeltaCache(self)
         self.metadata = MetadataSchema(self)
 
@@ -23,8 +25,10 @@ class Schema(Transaction, object):
         #set ob all the objects on the current schema or database
         self.objects = {}
 
+    def get_configuration(self):
+        return self.configuration
 
-    def to_object(self, query):
+    def convert_to_object(self, query):
         pass
 
     def merge_with(self, other_schema):

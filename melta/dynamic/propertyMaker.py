@@ -44,3 +44,4 @@ class PropertyMaker:
 
         self.migrateMethods(target)
         target._makeProperty(propertyName, value)
+        return self
