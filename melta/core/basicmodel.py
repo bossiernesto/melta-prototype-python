@@ -14,6 +14,9 @@ class MeltaBaseObject(Transaction, object):
     def get_id(self):
         return self._id
 
+    def get_data_type(self):
+        raise NotImplementedError('Should be implemented in subclass.')
+
     def generate_name(self):
         return generate_object_name(self.__class__.__name__)
 
@@ -61,6 +64,14 @@ class MeltaBaseObject(Transaction, object):
         self.metadata.rollback()
         super(MeltaBaseObject, self).rollback()
 
+    # Update updated_at when a member of the melta object is modified.
+    def __setattr__(self, name, value):
+        try:
+            super(MeltaBaseObject, self).__getattribute__('metadata') #call object __getattribute__ to not break missing method on AggregationObject
+        except AttributeError:
+            pass
+        return super(MeltaBaseObject, self).__setattr__(name, value)
+
 
 class AggregationObject(MeltaBaseObject):
     def __init__(self, melta_instance_name=None, primitive_type=INSTANCE_TYPE, *args, **kwargs):
@@ -71,6 +82,7 @@ class AggregationObject(MeltaBaseObject):
             self.set_attributes_list(*args)
         if kwargs:
             self.set_attrbutes(**kwargs)
+
 
     def get_attributes(self):
         return self._atomic_attributes
@@ -98,12 +110,18 @@ class AggregationObject(MeltaBaseObject):
     def get_data_type(self):
         return self._primitive_type
 
+    def get_class(self):
+        return self.metadata.original_class
+
     def destroy(self):
         for atomic in self._atomic_attributes:
             atomic.destroy()
         super(AggregationObject, self).destroy()
 
     def __getattribute__(self, name):
+        """
+        Missing method to get values of _atomic_attributes members by just calling their identifier.
+        """
         try:
             return super(AggregationObject, self).__getattribute__(name)
         except AttributeError:

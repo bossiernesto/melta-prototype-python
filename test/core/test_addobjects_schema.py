@@ -44,7 +44,6 @@ class TestSchemaFromPython(TestCase):
         self.assertEqual(self.integer_value, melta_object.value)
         self.assertEqual(self.schema, melta_object.get_schema())
 
-    @skip
     def test_add_persona_object(self):
         person = Person()
         person.name = "Tim"

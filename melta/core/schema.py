@@ -24,6 +24,7 @@ class Schema(Transaction, object):
         self.root_objects = set()
         #set ob all the objects on the current schema or database
         self.objects = {}
+        #TODO: log initialization of the schema
 
     def get_configuration(self):
         return self.configuration
@@ -47,6 +48,7 @@ class Schema(Transaction, object):
         self.objects[melta_object.get_id()] = melta_object
         self.metadata.update_object_space(melta_object)
         melta_object.added_to_schema(self)
+        #TODO: log event of adding an object
 
     def commit_state(self):
         self.cache.update_cache()
@@ -77,6 +79,7 @@ class Schema(Transaction, object):
         current_object.destroy()
         del current_object
         gc.collect()
+        #TODO: log removal of object from instance
 
     def add_object_to_schema(self, python_object, cache=True, alternate_name=None):
         from melta.core.basicmodel import MeltaBaseObject

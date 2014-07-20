@@ -47,7 +47,6 @@ class MetadataObject(Metadata):
             .buildProperty(self, 'modified_at', datetime.datetime.now()) \
             .buildProperty(self, 'object', object) \
             .buildProperty(self, 'schema') \
-            .buildProperty(self, 'type', object.get_data_type()) \
             .buildProperty(self, 'object_status', CLEAN_MELTAOBJECT_STATUS) \
             .buildProperty(self, 'original_class', original_class) \
             .buildProperty(self, 'object_references', set())
