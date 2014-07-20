@@ -68,6 +68,7 @@ class MeltaBaseObject(Transaction, object):
     def __setattr__(self, name, value):
         try:
             super(MeltaBaseObject, self).__getattribute__('metadata') #call object __getattribute__ to not break missing method on AggregationObject
+            self.metadata.notify_object_update()
         except AttributeError:
             pass
         return super(MeltaBaseObject, self).__setattr__(name, value)
@@ -135,6 +136,9 @@ class AtomicObject(MeltaBaseObject):
 
     def get_data_type(self):
         return type(self.value).__name__
+
+    def get_value(self):
+        return self.value
 
 
 class ReferenceObject(MeltaBaseObject):

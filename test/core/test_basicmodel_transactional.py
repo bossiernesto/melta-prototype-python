@@ -1,6 +1,6 @@
-from unittest import TestCase
+from unittest import TestCase, skip
 from melta.core.basicmodel import AtomicObject, AggregationObject, ReferenceObject
-import datetime
+from melta.core.metadata import CLEAN_MELTAOBJECT_STATUS,DIRTY_MELTAOBJECT_STATUS,INVALID_MELTAOBJECT_STATUS
 
 class TestMeltaObjectsTransaction(TestCase):
     def setUp(self):
@@ -38,32 +38,31 @@ class TestMeltaObjectsTransaction(TestCase):
 
     def test_atomic_propagation_to_meta(self):
         self.atomic.start()
-        now = datetime.datetime.now()
-        old_modified_at = self.atomic.metadata.modified_at
-        self.atomic.metadata.modified_at = now
+        dirty = DIRTY_MELTAOBJECT_STATUS
+        clean = self.atomic.metadata.object_status
+        self.atomic.metadata.object_status = dirty
         self.atomic.commit()
-        self.assertEqual(self.atomic.metadata.modified_at, now)
-        self.assertGreater(self.atomic.metadata.modified_at, old_modified_at)
-
+        self.assertEqual(self.atomic.metadata.object_status, dirty)
+        self.assertNotEqual(self.atomic.metadata.object_status, clean)
 
     def test_atomic_propagation_rollback(self):
         self.atomic.start()
-        now = datetime.datetime.now()
-        old_modified_at = self.atomic.metadata.modified_at
-        self.atomic.metadata.modified_at = now
+        dirty = DIRTY_MELTAOBJECT_STATUS
+        old_status = self.atomic.metadata.object_status
+        self.atomic.metadata.object_status = dirty
         self.atomic.rollback()
-        self.assertEqual(old_modified_at,self.atomic.metadata.modified_at)
-        self.assertLess(self.atomic.metadata.modified_at, now)
+        self.assertEqual(old_status,self.atomic.metadata.object_status)
+        self.assertNotEqual(self.atomic.metadata.object_status, dirty)
 
     def test_atomic_propagation_checkpoint(self):
         self.atomic.start()
-        now = datetime.datetime.now()
-        old_modified_at = self.atomic.metadata.modified_at
-        self.atomic.metadata.modified_at = now
+        dirty = DIRTY_MELTAOBJECT_STATUS
+        clean = self.atomic.metadata.object_status
+        self.atomic.metadata.object_status = dirty
         self.atomic.checkpoint()
-        now2 = datetime.datetime.now()
-        self.atomic.metadata.modified_at = now2
+        invalid = INVALID_MELTAOBJECT_STATUS
+        self.atomic.metadata.object_status = invalid
         self.atomic.rollback()
-        self.assertEqual(now, self.atomic.metadata.modified_at)
-        self.assertGreater(now2, self.atomic.metadata.modified_at)
-        self.assertLess(old_modified_at, self.atomic.metadata.modified_at)
+        self.assertEqual(dirty, self.atomic.metadata.object_status)
+        self.assertNotEqual(invalid, self.atomic.metadata.object_status)
+        self.assertNotEqual(clean, self.atomic.metadata.object_status)

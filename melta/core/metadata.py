@@ -41,11 +41,11 @@ OBJECT_STATUS = [CLEAN_MELTAOBJECT_STATUS, DIRTY_MELTAOBJECT_STATUS, INVALID_MEL
 
 
 class MetadataObject(Metadata):
-    def __init__(self, object):
-        original_class = object.instance_name if object.get_data_type() == INSTANCE_TYPE else None
+    def __init__(self, melta_object):
+        original_class = melta_object.instance_name if melta_object.get_data_type() == INSTANCE_TYPE else melta_object.get_data_type()
         PropertyMaker().buildProperty(self, 'created_at', datetime.datetime.now()) \
             .buildProperty(self, 'modified_at', datetime.datetime.now()) \
-            .buildProperty(self, 'object', object) \
+            .buildProperty(self, 'melta_object', melta_object) \
             .buildProperty(self, 'schema') \
             .buildProperty(self, 'object_status', CLEAN_MELTAOBJECT_STATUS) \
             .buildProperty(self, 'original_class', original_class) \
@@ -53,6 +53,7 @@ class MetadataObject(Metadata):
 
     def notify_object_update(self):
         self.modified_at = datetime.datetime.now()
+        self.original_class = self.melta_object.get_data_type()
 
     def get_schema(self):
         return self.schema

@@ -1,4 +1,4 @@
-from unittest import TestCase, skip
+from unittest import TestCase
 from test.fixture.class_repositories import person1, house2
 from melta.core.object_converter import MeltaObjectConverter
 import copy

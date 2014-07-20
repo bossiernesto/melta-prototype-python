@@ -13,6 +13,16 @@ class AtomicModelTest(TestCase):
         self.assertEqual(atomic.value, None)
         self.assertEqual(atomic.instance_name, 'PersonID')
 
+    def test_update_value_check_updated_at(self):
+        atomic = AtomicObject('PersonaID', 34)
+        created_at = atomic.get_metadata().created_at
+        modified_at = atomic.get_metadata().modified_at
+        atomic.value = 32
+        self.assertNotEqual(34, atomic.get_value())
+        self.assertEqual(32, atomic.get_value())
+        self.assertGreater(atomic.get_metadata().modified_at, modified_at)
+        self.assertEqual(created_at, atomic.get_metadata().created_at)
+
 
 class AggregationModelTest(TestCase):
     def setUp(self):
