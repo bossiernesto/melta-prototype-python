@@ -1,7 +1,7 @@
 melta
 =====
-
-Project Status Build: 
+[![Build Status](https://travis-ci.org/bossiernesto/melta.svg)](https://travis-ci.org/bossiernesto/melta)
+[![Latest Version](http://img.shields.io/github/tag/bossiernesto/melta.svg)](https://github.com/bossiernesto/melta/releases)
 
 A small object database engine.
 
