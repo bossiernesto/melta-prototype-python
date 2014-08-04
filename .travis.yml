@@ -9,7 +9,4 @@ install:
   - pip install .
   - pip install -r requirements.txt
 script:
-  - python melta/test/core/__init__.py
-  - python melta/test/dynamic/__init__.py
-  - python melta/test/transactions/__init__py
-  - python melta/test/utils/__init__.py
+  - python run_tests.py
