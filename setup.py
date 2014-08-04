@@ -13,5 +13,5 @@ setup(name="Melta",
                    "Environment :: Console",
                    "Topic :: Database",
                    "License :: OSI Approved :: BSD License"],
-      requires=["OpenSSL", "six"]
+      requires=["pyopenssl", "six"]
 )
