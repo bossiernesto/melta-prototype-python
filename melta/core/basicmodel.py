@@ -99,6 +99,8 @@ class AggregationObject(MeltaBaseObject):
             self._atomic_attributes.append(melta_object)
 
     def _find_atomic_attribute_(self, name):
+        if name.startswith('__'):
+            raise AttributeError
         value = [atomic.value for atomic in self._atomic_attributes if atomic.instance_name == name][0]
         if not value:
             raise NotFoundMeltaObject
