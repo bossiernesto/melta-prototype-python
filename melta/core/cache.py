@@ -34,7 +34,7 @@ class Monitor():
 class MeltaCache(object):
     """
     Melta cache is a bookkeeping mechanism of MeltaCacheObjects associated with the melta_object id, the CacheObjects
-    have the original python object in the enviroment and in case of querying it'll consult this very cache.
+    have the original python object in the enviroment and in case of querying it'll consult this cache.
     Probably the best idea is to implement a LRU cache for now.
     """
 
@@ -59,9 +59,9 @@ class MeltaCache(object):
         configuration = self.schema.get_configuration()
         if configuration.can_remove_on_cascade():
             self.schema.remove_object(melta_object)
-            gc.collect()
         else:
             self.to_object_cache.pop(melta_object)
+        gc.collect()
 
 
     @listify

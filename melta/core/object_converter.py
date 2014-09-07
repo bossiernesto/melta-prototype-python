@@ -6,6 +6,7 @@ from .melta_types import INSTANCE_TYPE
 
 #TODO: make tests and complete
 
+
 class GenericConverter(object):
     """
     Abstract class with the contract of the methods that it's subclasses should implement
@@ -49,7 +50,7 @@ StringConverter = PrimitiveConverter
 IntegerConverter = PrimitiveConverter
 FloatConverter = PrimitiveConverter
 
-#TODO: Remove this NullConverter when all types have a protocol of Converte implemented.
+#TODO: Remove this NullConverter when all types have a protocol of Converter implemented.
 class NullConverter(GenericConverter):
     def to_melta_object(self, python_object, alternate_name=None):
         return AtomicObject(generate_object_name(python_object), 43)

@@ -29,6 +29,9 @@ $ git clone git@github.com:bossiernesto/melta.git
         - Str
         - More types coming soon (other iterable and primitive types)
 
+## Source of the idea
+
+   This small database prototype is heavily based on the paper of [OMG Object Database Technology Working Group White Paper](http://www.odbms.org/wp-content/uploads/2007/09/033.01-Card-Next-Generation-Object-Database-Standardization-September-2007.pdf)
 
 ## Query Language
 Still on the works will be avaiable soon.
