@@ -107,9 +107,11 @@ class ListConverter(GenericConverter):
     def to_object(self, melta_object):
         return self._aggregated_melta_object_to_list(melta_object)
 
+TupleConverter = ListConverter
 
 OBJECT_CONVERSORS = {'dict': DictionaryConverter, INSTANCE_TYPE: InstanceConverter, 'str': StringConverter,
-                     'int': IntegerConverter, 'float': FloatConverter, 'list': ListConverter, 'method': NullConverter}
+                     'tuple': TupleConverter, 'int': IntegerConverter, 'float': FloatConverter,
+                     'list': ListConverter, 'method': NullConverter}
 
 
 class MeltaObjectConverter(object):

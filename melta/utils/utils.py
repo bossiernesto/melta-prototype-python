@@ -36,3 +36,7 @@ def getAttributes(obj):
 
 
 get_python_type_name = lambda python_object: type(python_object).__name__
+
+
+def isPrimitive(obj):
+    return not hasattr(obj, '__dict__')

@@ -26,7 +26,9 @@ $ git clone git@github.com:bossiernesto/melta.git
         - Dictionary
         - python instance
         - Int
+        -Float
         - Str
+        - Tuple
         - More types coming soon (other iterable and primitive types)
 
 ## Source of the idea
