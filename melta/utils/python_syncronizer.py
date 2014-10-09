@@ -19,7 +19,7 @@ class PythonSyncronizer(object):
         self.ignore_attrs_name = ignore_attrs_name
         self.private_startwith = "_"
 
-    def syncronize(self, from_object, to_object):
+    def syncronize(self, from_object, to_object, side_effects=False):
         clazz_hierarchy = from_object.__class__
 
         if not self._to_class_same_hierarchy(to_object, clazz_hierarchy):
@@ -27,7 +27,7 @@ class PythonSyncronizer(object):
                                              'with class hierarchy {2}'.format(to_object, from_object,
                                                                                get_ancestors(clazz_hierarchy)))
 
-        self._syncronize_objects(from_object, to_object)
+        self._syncronize_objects(from_object, to_object, side_effects)
 
     def ignore_private_attributes(self, attr_list):
         return [value for value in attr_list if not value.startswith(self.private_startwith)] \
@@ -43,7 +43,7 @@ class PythonSyncronizer(object):
         attributes_names = self.ignore_custom_attributes(attributes_names)
         return attributes_names
 
-    def _syncronize_objects(self, from_object, to_object):
+    def _syncronize_objects(self, from_object, to_object, side_effects=False):
         attributes_from = self._get_attributes(from_object)
 
         for attribute in attributes_from:

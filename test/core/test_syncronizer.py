@@ -7,7 +7,7 @@ import copy
 
 class TestSyncronizer(TestCase):
     def setUp(self):
-        #self.syncronizer = Syncronizer()
+        self.syncronizer = MeltaSyncronizer()
 
         #    house2 object
         #    house2 => "building_age", 34
@@ -20,14 +20,14 @@ class TestSyncronizer(TestCase):
         self.melta_house2_deepcopy = copy.deepcopy(self.melta_house2) #keep a deepcopy of the object to compare
 
     def test_no_syncronization(self):
-        #syncronzation should be melta_object => python_object, with side effect 1 as default value,
-        # if default value is 0 a new melta object is created and returned, but identity is lost by enabling this last value.
-        self.syncronizer.syncronize(self.melta_house2, self.house2, side_effect=True)
+        #syncronzation should be python_object => melta_object, with side effect True as default value,
+        # if default value is False a new melta object is created, but identity is lost by enabling this last value.
+        self.syncronizer.syncronize(self.house2, self.melta_house2, side_effect=True)
         self.assertEqual(self.melta_house2, self.melta_house2_deepcopy)
 
     def test_syncronization(self):
         self.house2.building_age = 45
-        self.syncronizer.syncronize(self.melta_house2, self.house2)
+        self.syncronizer.syncronize(self.house2, self.melta_house2)
         self.assertNotEqual(self.melta_house2, self.melta_house2_deepcopy)
         self.assertEqual(45, self.melta_house2.building_age)
         self.assertEqual(self.house2.building_age, self.melta_house2.building_age)
@@ -35,7 +35,7 @@ class TestSyncronizer(TestCase):
 
     def test_double_syncronization(self):
         self.house2.building_age = 20
-        self.syncronizer.syncronize(self.melta_house2, self.house2)
+        self.syncronizer.syncronize(self.house2, self.melta_house2)
         self.assertEqual(20, self.melta_house2.building_age)
 
         self.house2.material = "concrete"
