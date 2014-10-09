@@ -2,6 +2,7 @@ melta
 =====
 [![Build Status](https://travis-ci.org/bossiernesto/melta.svg)](https://travis-ci.org/bossiernesto/melta)
 [![Latest Version](http://img.shields.io/github/tag/bossiernesto/melta.svg)](https://github.com/bossiernesto/melta/releases)
+[![Stories in Ready](https://badge.waffle.io/bossiernesto/melta.svg?label=ready&title=Ready)](http://waffle.io/bossiernesto/melta)
 
 A small object database engine.
 
