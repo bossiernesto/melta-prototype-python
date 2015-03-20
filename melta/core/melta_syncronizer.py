@@ -1,7 +1,7 @@
 __author__ = 'ernesto'
 
 from melta.utils.python_syncronizer import PythonSyncronizer, PythonSyncronizerException, get_ancestors
-from melta.core.melta_types import MeltaBaseObject
+from melta.core.basicmodel import MeltaBaseObject
 
 
 def is_class_ancestor_present(klass, ancestor_class):

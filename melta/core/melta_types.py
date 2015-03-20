@@ -1,6 +1,5 @@
 import weakref
 import types
-from melta.core.basicmodel import MeltaBaseObject,AggregationObject,AtomicObject,ReferenceObject
 
 INSTANCE_TYPE = 'instance'
 

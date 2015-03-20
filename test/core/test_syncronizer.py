@@ -1,4 +1,4 @@
-from unittest import TestCase
+from unittest import TestCase, skip
 from test.fixture.class_repositories import person1, house2
 from melta.core.object_converter import MeltaObjectConverter
 from melta.core.melta_syncronizer import MeltaSyncronizer
@@ -19,12 +19,14 @@ class TestSyncronizer(TestCase):
         self.melta_house2 = self.converter.to_melta_object(self.house2)
         self.melta_house2_deepcopy = copy.deepcopy(self.melta_house2) #keep a deepcopy of the object to compare
 
+    @skip
     def test_no_syncronization(self):
         #syncronzation should be python_object => melta_object, with side effect True as default value,
         # if default value is False a new melta object is created, but identity is lost by enabling this last value.
         self.syncronizer.syncronize(self.house2, self.melta_house2, side_effect=True)
         self.assertEqual(self.melta_house2, self.melta_house2_deepcopy)
 
+    @skip
     def test_syncronization(self):
         self.house2.building_age = 45
         self.syncronizer.syncronize(self.house2, self.melta_house2)
@@ -33,6 +35,7 @@ class TestSyncronizer(TestCase):
         self.assertEqual(self.house2.building_age, self.melta_house2.building_age)
         self.assertLess(self.melta_house2_deepcopy.building_age, self.melta_house2.building_age)
 
+    @skip
     def test_double_syncronization(self):
         self.house2.building_age = 20
         self.syncronizer.syncronize(self.house2, self.melta_house2)
@@ -46,6 +49,7 @@ class TestSyncronizer(TestCase):
         self.assertEqual(self.house2.material, self.melta_house2.material)
         self.assertEqual('concrete', self.melta_house2.material)
 
+    @skip
     def test_nosideeffect_syncronization(self):
         from melta.core.basicmodel import AggregationObject
 
