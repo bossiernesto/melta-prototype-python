@@ -1,8 +1,6 @@
 import unittest
 import glob
 import sys
-from coveralls import Coveralls
-from coveralls.api import log
 
 test_file_strings = glob.glob('test/*/test_*.py')
 module_strings = [str[0:len(str) - 3] for str in test_file_strings]
