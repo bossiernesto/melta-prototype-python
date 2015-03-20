@@ -1,6 +1,7 @@
 from unittest import TestCase
 from melta.core.cache import Monitor
-
+from coveralls import Coveralls
+from coveralls.api import log
 
 class A:
     def __init__(self, number):

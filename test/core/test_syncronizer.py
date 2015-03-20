@@ -3,7 +3,8 @@ from test.fixture.class_repositories import person1, house2
 from melta.core.object_converter import MeltaObjectConverter
 from melta.core.melta_syncronizer import MeltaSyncronizer
 import copy
-
+from coveralls import Coveralls
+from coveralls.api import log
 
 class TestSyncronizer(TestCase):
     def setUp(self):
