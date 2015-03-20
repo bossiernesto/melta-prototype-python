@@ -9,4 +9,4 @@ install:
   - pip install .
   - pip install -r requirements.txt
 script:
-  - python run_tests.py
+  - coverage run --source=python run_tests.py
