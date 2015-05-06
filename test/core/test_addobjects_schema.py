@@ -15,17 +15,11 @@ class TestSchema(TestCase):
         self.assertTrue(isinstance(self.schema, Schema))
         self.assertEqual(self.schema.schema_name, "TestSchema")
 
-    def test_add_atomic_object(self):
-        self.schema.add_object(self.atomic)
-        self.assertIn(self.atomic, self.schema.root_objects)
-
-    def test_add_aggregation_object(self):
-        self.schema.add_object(self.aggregation)
-        self.assertIn(self.aggregation, self.schema.root_objects)
-
-    def test_add_reference_object(self):
-        self.schema.add_object(self.reference)
-        self.assertIn(self.reference, self.schema.root_objects)
+    def test_add_basictype_objects(self):
+        object_types = [self.atomic, self.aggregation, self.reference]
+        for object_type in object_types:
+            self.schema.add_object(object_type)
+            self.assertIn(object_type, self.schema.root_objects)
 
 
 class TestSchemaFromPython(TestCase):
