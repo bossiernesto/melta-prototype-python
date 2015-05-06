@@ -36,6 +36,8 @@ $ git clone git@github.com:bossiernesto/melta.git
 ## Source of the idea
 
    This small database prototype is heavily based on the paper of [OMG Object Database Technology Working Group White Paper](http://www.odbms.org/wp-content/uploads/2007/09/033.01-Card-Next-Generation-Object-Database-Standardization-September-2007.pdf)
+   
+   There is actually a proposed architecture described in a [formal paper](https://github.com/bossiernesto/melta-paper/blob/master/Melta_Paper.pdf). This paper has been presented on the [WISIT '14](http://www.uqbar-project.org/events/wisit-2014) conference. 
 
 ## Query Language
 Still on the works will be avaiable soon.
