@@ -2,6 +2,7 @@ from .mutator import Mutator
 from .checker import isObjOfType
 import inspect
 
+
 class PropertyMaker:
     def _getAttrName(self, propertyName):
         return '_' + propertyName
