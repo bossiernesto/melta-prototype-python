@@ -2,14 +2,6 @@ from .mutator import Mutator
 from .checker import isObjOfType
 import inspect
 
-
-def _makeProperty(self, propertyName, value):
-    fget = lambda self: self._getProperty(propertyName)
-    fset = lambda self, value: self._setProperty(propertyName, value)
-    setattr(self.__class__, propertyName, property(fget, fset))
-    setattr(self, self._getAttrName(propertyName), value)
-
-
 class PropertyMaker:
     def _getAttrName(self, propertyName):
         return '_' + propertyName
